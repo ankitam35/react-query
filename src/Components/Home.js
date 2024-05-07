@@ -1,11 +1,21 @@
-import React from 'react'
+import axios from "axios";
+import { useQuery } from "react-query";
 
 const Home = () => {
-  return (
-    <div>
-      Home Page
-    </div>
-  )
-}
+  const { isLoading, data } = useQuery("select-data", () => {
+    return axios.get("https://jsonplaceholder.typicode.com/todos/");
+  });
 
-export default Home
+console.log(data)
+  return isLoading ? (
+    <p>Loading</p>
+  ) : (
+    data?.data.map((item) => (
+      <div>
+        {item.id} - {item.title}
+      </div>
+    ))
+  );
+};
+
+export default Home;
